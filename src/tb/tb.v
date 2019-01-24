@@ -15,7 +15,14 @@ module tb;
    wire                 RsTx;                   // From uut_ of nexys3.v
    wire [7:0]           led;                    // From uut_ of nexys3.v
    // End of automatics
-
+	
+	reg [7:0] instructions [1023:0];
+	reg [9:0] inst_count;
+	reg [7:0] curr_inst;
+	reg [1:0] op_code;
+	
+	integer j;
+	
    initial
      begin
         //$shm_open  ("dump", , ,1);
@@ -27,16 +34,31 @@ module tb;
         #1000 btnR = 0;
         #1500000;
         
-        tskRunPUSH(0,4);
-        tskRunPUSH(0,0);
-        tskRunPUSH(1,3);
-        tskRunMULT(0,1,2);
-        tskRunADD(2,0,3);
-        tskRunSEND(0);
-        tskRunSEND(1);
-        tskRunSEND(2);
-        tskRunSEND(3);
-        
+//        tskRunPUSH(0,4);
+//        tskRunPUSH(0,0);
+//        tskRunPUSH(1,3);
+//        tskRunMULT(0,1,2);
+//        tskRunADD(2,0,3);
+//        tskRunSEND(0);
+//        tskRunSEND(1);
+//        tskRunSEND(2);
+//        tskRunSEND(3);
+
+		  $readmemb("seq.code", instructions);
+        inst_count = instructions[0];
+		  
+		  for(j = 1; j <= inst_count; j = j+1)
+		  begin
+				curr_inst = instructions[j];
+				op_code = curr_inst[7:6];
+				case (op_code)
+					2'b00: tskRunPUSH(curr_inst[5:4], curr_inst[3:0]);
+					2'b01: tskRunADD(curr_inst[5:4], curr_inst[3:2], curr_inst[1:0]);
+					2'b10: tskRunMULT(curr_inst[5:4], curr_inst[3:2], curr_inst[1:0]);
+					2'b11: tskRunSEND(curr_inst[5:4]);
+				endcase
+		  end
+		  
         #1000;        
         $finish;
      end
