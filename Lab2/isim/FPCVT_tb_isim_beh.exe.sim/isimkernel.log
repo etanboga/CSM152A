@@ -1,0 +1,28 @@
+Command line:
+   FPCVT_tb_isim_beh.exe
+     -simmode  gui
+     -simrunnum  0
+     -socket  49365
+
+Tue Jan 29 15:15:01 2019
+
+
+ Elaboration Time: 0.0936 sec
+
+ Current Memory Usage: 829.247 Meg
+
+ Total Signals          : 16
+ Total Nets             : 37
+ Total Signal Drivers   : 8
+ Total Blocks           : 3
+ Total Primitive Blocks : 2
+ Total Processes        : 11
+ Total Traceable Variables  : 23
+ Total Scalar Nets and Variables : 154
+
+ Total Simulation Time: 0.0936 sec
+
+ Current Memory Usage: 671.961 Meg
+
+Tue Jan 29 15:20:21 2019
+
