@@ -26,13 +26,13 @@ module TC2SM(
 
 reg MSB;
 reg [11:0] Mag;
-
-
+;
 
 always @ *
 begin
     MSB = D[11];
     S = MSB;
+    
     
     case (MSB)
         0: M = D[10:0]; 
