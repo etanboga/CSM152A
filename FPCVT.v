@@ -1,3 +1,4 @@
+
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
@@ -25,13 +26,13 @@ module FPCVT(
     output reg [3:0] F
     );
     
-reg [10:0] mag;
-reg [2:0] exp;
-reg [3:0] sig;
-reg fifth;
+wire [10:0] mag;
+wire [2:0] exp;
+wire [3:0] sig;
+wire fifth;
 
-reg [3:0] sigOut;
-reg [2:0] expOut;
+wire [3:0] sigOut;
+wire [2:0] expOut;
     
 TC2SM translator(.D(D), .S(S), .M(mag));
 
