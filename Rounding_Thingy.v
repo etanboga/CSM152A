@@ -22,8 +22,8 @@ module Rounding_Thingy(
     input [2:0] exp,
     input [3:0] sig,
     input fifth,
-    output [2:0] E,
-    output [3:0] F
+    output reg [2:0] E,
+    output reg [3:0] F
     );
 
 always @ *
