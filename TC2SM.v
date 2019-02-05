@@ -26,7 +26,7 @@ module TC2SM(
 
 reg MSB;
 reg [11:0] Mag;
-;
+
 
 always @ *
 begin
