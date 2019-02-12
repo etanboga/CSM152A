@@ -22,19 +22,20 @@ module Stopwatch_tb(
     );
     
 reg clk;
-reg one;
-reg two;
-reg fast;
-reg blinky;
+reg reset;
+wire one;
+wire two;
+wire fast;
+wire blinky;
 
-Clock_Divider _UUT(.master_clk(clk), .one_hz_clk(one), .two_hz_clk(two), .faster_clk(fast), .blinky_clk(blinky));
+Clock_Divider _UUT(.master_clk(clk), .rst(reset), .one_hz_clk(one), .two_hz_clk(two), .faster_clk(fast), .blinky_clk(blinky));
 
 initial begin
+#1000
+reset = 1;
 clk = 0;
-one = 0;
-two = 0;
-fast = 0;
-blinky = 0;
+#50 reset = 0;
+
 #1000000000 
 #1000000000 $finish;
 end
