@@ -27,6 +27,7 @@ module Clock_Divider(
     output reg blinky_clk
     );
 
+
 reg [25:0] one_hz = 0;
 reg [25:0] two_hz = 0;
 reg [25:0] fast = 0;
@@ -52,32 +53,35 @@ begin
         one_hz_clk <= ~one_hz_clk; // Flip 1 Hz clock
     end
     
+    else
+        one_hz <= one_hz + 1;
+    
     if (two_hz == 25000000) //2 Hz clock
     begin
         two_hz <= 0;
         two_hz_clk <= ~two_hz_clk;
     end
     
+    else
+        two_hz <= two_hz + 1;
+    
     if (fast == 500000) // 100 Hz clock TODO: Fix this value
     begin
         fast <= 0;
-        faster_clk = ~faster_clk;
+        faster_clk <= ~faster_clk;
     end
+    
+    else
+        fast <= fast + 1;
     
     if (blink == 12500000)
     begin
         blink <= 0;
-        blinky_clk = ~blinky_clk;
+        blinky_clk <= ~blinky_clk;
     end
     
     else
-    begin
-        one_hz <= one_hz + 1; // Increment counter 
-        two_hz <= two_hz + 1; // Increment counter for 2Hz clock
-        fast <= fast + 1; // Increment counter for faster clock
         blink <= blink + 1;
-    end
-    
 
 end
 

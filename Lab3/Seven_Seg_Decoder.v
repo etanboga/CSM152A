@@ -1,3 +1,4 @@
+
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
@@ -19,7 +20,30 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module Seven_Seg_Decoder(
+    input [3:0] digit0,
+    input [3:0] digit1,
+    input [3:0] digit2,
+    input [3:0] digit3,
+    input clk,
+    output seg[7:0],
+    output an[3:0]
     );
+    
+    reg [1:0] count = 0;
+    
+    assign seg[7] = 0;
+    
+   
+    
+    always @ (posedge clk)
+    begin
+        case(count)
+            0: ;
+            1: ;
+            2: ;
+            3: ;
+        endcase
+    end
 
 
 endmodule
