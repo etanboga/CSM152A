@@ -20,22 +20,22 @@
 //////////////////////////////////////////////////////////////////////////////////
 module Decoder(
     input [3:0] digit,
-    output [6:0] segment
+    output reg [6:0] segment
     );
 
 always @ *
 begin
     case (digit)
-        0: assign segment = 'b0111111;
-        1: assign segment = 'b0000110;
-        2: assign segment = 'b1011011;
-        3: assign segment = 'b1001111;
-        4: assign segment = 'b1100110;
-        5: assign segment = 'b1101101;
-        6: assign segment = 'b1111101;
-        7: assign segment = 'b0000111;
-        8: assign segment = 'b1111111;
-        9: assign segment = 'b1101111;
+        0: segment = 'b0111111;
+        1: segment = 'b0000110;
+        2: segment = 'b1011011;
+        3: segment = 'b1001111;
+        4: segment = 'b1100110;
+        5: segment = 'b1101101;
+        6: segment = 'b1111101;
+        7: segment = 'b0000111;
+        8: segment = 'b1111111;
+        9: segment = 'b1101111;
     endcase
 end
 

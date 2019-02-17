@@ -65,7 +65,7 @@ begin
     else
         two_hz <= two_hz + 1;
     
-    if (fast == 500000) // 100 Hz clock TODO: Fix this value
+    if (fast == 125000) // 400 Hz Clock, hopefully refresh rate isn't too high
     begin
         fast <= 0;
         faster_clk <= ~faster_clk;

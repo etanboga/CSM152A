@@ -28,8 +28,11 @@ wire two;
 wire fast;
 wire blinky;
 
-Clock_Divider _UUT(.master_clk(clk), .rst(reset), .one_hz_clk(one), .two_hz_clk(two), .faster_clk(fast), .blinky_clk(blinky));
+wire[7:0] segments;
+wire[3:0] annode;
 
+Clock_Divider _UUT(.master_clk(clk), .rst(reset), .one_hz_clk(one), .two_hz_clk(two), .faster_clk(fast), .blinky_clk(blinky));
+Seven_Seg_Controller _UUT2(.clk(fast), .digit0('b0000), .digit1('b0000), .digit2('b0000), .digit3('b0000), .seg(segments), .an(annode));
 initial begin
 #1000
 reset = 1;

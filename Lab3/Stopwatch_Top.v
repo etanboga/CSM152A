@@ -1,4 +1,3 @@
-
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
@@ -22,5 +21,7 @@
 module Stopwatch_Top(
     );
 
+Clock_Divider clk_div();
+Seven_Seg_Controller disp(.digit0(), .digit1(), .digit2(), .digit3());
 
 endmodule
