@@ -40,7 +40,7 @@ begin
 	ff2 <= ff1;
 end
 
-always @ (posedge slow_clk)
+always @ (posedge ff1)
 begin
 	stable <= ff1 & (~ff2);
 end
