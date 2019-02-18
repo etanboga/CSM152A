@@ -3,7 +3,7 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    14:57:49 02/07/2019 
+// Create Date:    02:29:00 02/17/2019 
 // Design Name: 
 // Module Name:    Clock_Divider 
 // Project Name: 
@@ -21,36 +21,46 @@
 module Clock_Divider(
     input master_clk,
     input rst, 
-    output reg one_hz_clk,
-    output reg two_hz_clk,
-    output reg faster_clk,
-    output reg blinky_clk
+    output one_hz_clk,
+    output two_hz_clk,
+    output faster_clk,
+    output blinky_clk
     );
 
 
-reg [25:0] one_hz = 0;
-reg [25:0] two_hz = 0;
-reg [25:0] fast = 0;
-reg [25:0] blink = 0;
+reg [26:0] one_hz = 0;
+reg [26:0] two_hz = 0;
+reg [26:0] fast = 0;
+reg [26:0] blink = 0;
 
-always @ (posedge master_clk or posedge rst)
+reg one_hz_boi = 0;
+reg two_hz_boi = 0;
+reg faster_boi = 0;
+reg blinky_boi = 0;
+
+assign one_hz_clk = one_hz_boi;
+assign two_hz_clk = two_hz_boi;
+assign faster_clk = faster_boi;
+assign blinky_clk = blinky_boi;
+
+always @ (posedge master_clk)
 begin
     if (rst)
     begin
         one_hz <= 0;
-        one_hz_clk <= 0; 
+        one_hz_boi <= 0; 
         two_hz <= 0;
-        two_hz_clk <= 0;
+        two_hz_boi <= 0;
         fast <= 0;
-        faster_clk <= 0;
+        faster_boi <= 0;
         blink <= 0;
-        blinky_clk <= 0;
+        blinky_boi <= 0;
     end
     
     if (one_hz == 50000000) //1 Hz Clock
     begin
         one_hz <= 0; // Set counter register to 0
-        one_hz_clk <= ~one_hz_clk; // Flip 1 Hz clock
+        one_hz_boi <= ~one_hz_boi; // Flip 1 Hz clock
     end
     
     else
@@ -59,7 +69,7 @@ begin
     if (two_hz == 25000000) //2 Hz clock
     begin
         two_hz <= 0;
-        two_hz_clk <= ~two_hz_clk;
+        two_hz_boi <= ~two_hz_boi;
     end
     
     else
@@ -68,7 +78,7 @@ begin
     if (fast == 125000) // 400 Hz Clock, hopefully refresh rate isn't too high
     begin
         fast <= 0;
-        faster_clk <= ~faster_clk;
+        faster_boi <= ~faster_boi;
     end
     
     else
@@ -77,7 +87,7 @@ begin
     if (blink == 12500000)
     begin
         blink <= 0;
-        blinky_clk <= ~blinky_clk;
+        blinky_boi <= ~blinky_boi;
     end
     
     else

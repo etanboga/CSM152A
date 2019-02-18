@@ -3,7 +3,7 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date:    15:30:15 02/14/2019 
+// Create Date:    02:30:13 02/17/2019 
 // Design Name: 
 // Module Name:    Decoder 
 // Project Name: 
@@ -17,9 +17,9 @@
 // Revision 0.01 - File Created
 // Additional Comments: 
 //
-//////////////////////////////////////////////////////////////////////////////////
-module Decoder(
-    input [3:0] digit,
+//////////////////////////////////////////////////////////////////////////////////module Decoder(
+module Decoder (    
+	 input [3:0] digit,
     output reg [6:0] segment
     );
 
@@ -36,7 +36,8 @@ begin
         7: segment = 'b0000111;
         8: segment = 'b1111111;
         9: segment = 'b1101111;
-    endcase
+		  default : segment = 'b0111111;
+	endcase
 end
 
 endmodule
