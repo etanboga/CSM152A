@@ -29,10 +29,10 @@ module Asset_Manager(
     output [8:0] paddle2Y
     );
     
-    parameter MAX_X = 640;
+    parameter MAX_X = 790;
     parameter MAX_Y = 480;
-    parameter MIN_X = 0;
-    parameter MIN_Y = 34;
+    parameter MIN_X = 152;
+    parameter MIN_Y = 40;
     
     wire [9:0] ball_pos_x;
     wire [8:0] ball_pos_y;
@@ -88,8 +88,14 @@ module Asset_Manager(
     assign ballleft = left_ball;
     assign ballright = right_ball;
     
+    reg rst = 0;
+    wire rset;
+    
+    assign rset = rst;
+    
     Ball_Controller B (
         .clk(clk),
+        .rst(rset),
         .up(ballup),
         .down(balldown),
         .left(ballleft),
@@ -101,12 +107,12 @@ module Asset_Manager(
     
     always @ (posedge clk)
     begin
-        if (paddle_1_pos == MAX_Y)
+        if (paddle_1_pos >= MAX_Y)
         begin
             up1 <= 1;
             down1 <= 0;
         end
-        else if (paddle_1_pos == MIN_Y)
+        else if (paddle_1_pos <= MIN_Y)
         begin
             up1 <= 0;
             down1 <= 1;
@@ -117,12 +123,12 @@ module Asset_Manager(
             down1 <= down1;
         end
         
-        if (paddle_2_pos == MAX_Y)
+        if (paddle_2_pos >= MAX_Y)
         begin
             up2 <= 1;
             down2 <= 0;
         end
-        else if (paddle_2_pos == MIN_Y)
+        else if (paddle_2_pos <= MIN_Y)
         begin
             up2 <= 0;
             down2 <= 1;
@@ -131,6 +137,41 @@ module Asset_Manager(
         begin
             up2 <= up2;
             down2 <= down2;
+        end
+        
+        if (ball_pos_y >= MAX_Y)
+        begin
+            up_ball <= 1;
+            down_ball <= 0;
+        end
+        else if (ball_pos_y <= MIN_Y)
+        begin
+            up_ball <= 0;
+            down_ball <= 1;
+        end
+        else
+        begin
+            up_ball <= up_ball;
+            down_ball <= down_ball;
+        end
+        
+        if (ball_pos_x >= MAX_X)
+        begin
+            rst <= 1;
+            right_ball <= 0;
+            left_ball <= 1;
+        end
+        else if (ball_pos_x <= MIN_X)
+        begin
+            rst <= 1;
+            right_ball <= 1;
+            left_ball <= 0;
+        end
+        else
+        begin
+            rst <= 0;
+            right_ball <= right_ball;
+            left_ball <= left_ball;
         end
     end
 endmodule

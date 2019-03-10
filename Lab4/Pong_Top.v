@@ -84,15 +84,6 @@ module Pong_Top(
         .game_clk(gclk)
      ); 
     
-    /*
-    input clk,
-    input reset,
-    output [9:0] ballX,
-    output [8:0] ballY,
-    output [8:0] paddle1Y,
-    output [8:0] paddle2Y
-    */
-    
     Asset_Manager (
         .clk(gclk),
         .reset(clr),
