@@ -21,16 +21,16 @@
 
 
 module Pong_Top(
-    input wire clk,            //master clock = 100MHz
-    input wire clr,            //right-most pushbutton for reset
-    output wire [6:0] seg,    //7-segment display LEDs
-    output wire [3:0] an,    //7-segment display anode enable
-    output wire dp,            //7-segment display decimal point
-    output wire [2:0] red,    //red vga output - 3 bits
-    output wire [2:0] green,//green vga output - 3 bits
-    output wire [1:0] blue,    //blue vga output - 2 bits
-    output wire hsync,        //horizontal sync out
-    output wire vsync            //vertical sync out
+    input wire clk,            
+    input wire clr,            // center button
+    input wire start,          // top button
+    output wire [6:0] seg,    
+    output wire [3:0] an,    
+    output wire [2:0] red,    
+    output wire [2:0] green,
+    output wire [1:0] blue,    
+    output wire hsync,        
+    output wire vsync            
     );
     
     
@@ -39,9 +39,6 @@ module Pong_Top(
     
     // VGA display clock interconnect
     wire dclk;
-    
-    // disable the 7-segment decimal points
-    assign dp = 1;
     
     // Separate Clocks
     wire gclk;
@@ -73,6 +70,31 @@ module Pong_Top(
     wire [3:0] digit_two;
     wire [3:0] digit_three;
     
+    wire run;
+    
+    Debouncer D1 (
+        .bouncy_signal(start),
+        .debclk(segclk),
+        .stable_signal(run)
+    );
+    
+    reg isRunning = 0;
+    wire runGame;
+    assign runGame = isRunning;
+    
+    always @ (posedge run)
+    begin
+        isRunning <= ~isRunning;
+    end
+
+//    always @ (posedge clk or posedge start)
+//    begin
+//        if (start == 1 && run == 0)
+//        begin
+//            isRunning <= ~isRunning;
+//        end
+//    end
+    
     
     // generate 7-segment clock & display clock
     clockdiv U1(
@@ -95,6 +117,7 @@ module Pong_Top(
         .reset(clr),
         .ballX(posX),
         .ballY(posY),
+        .start(runGame),
         .paddle1Y(paddle_one),
         .paddle2Y(paddle_two),
         .score_one_ones(digit_two),

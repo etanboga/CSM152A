@@ -23,6 +23,7 @@
 module Asset_Manager(
     input clk,
     input reset,
+    input start,
     output [9:0] ballX,
     output [8:0] ballY,
     output [8:0] paddle1Y,
@@ -110,6 +111,7 @@ module Asset_Manager(
     Ball_Controller B (
         .clk(clk),
         .rst(rset),
+        .start(start),
         .up(ballup),
         .down(balldown),
         .left(ballleft),

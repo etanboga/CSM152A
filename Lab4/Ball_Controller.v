@@ -27,6 +27,7 @@ module Ball_Controller(
     input down,
     input left,
     input right,
+    input start,
     output [9:0] ballX,
     output [8:0] ballY
     );
@@ -40,6 +41,12 @@ module Ball_Controller(
     always @ (posedge clk)
     begin
         if (rst == 1)
+        begin
+            posX <= 464;
+            posY <= 271;
+        end
+        
+        else if (start == 0)
         begin
             posX <= 464;
             posY <= 271;
