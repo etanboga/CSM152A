@@ -67,6 +67,12 @@ module Pong_Top(
     wire [8:0] paddle_one;
     wire [8:0] paddle_two;
     
+    // wires for seven segment display
+    wire [3:0] digit_zero;
+    wire [3:0] digit_one;
+    wire [3:0] digit_two;
+    wire [3:0] digit_three;
+    
     
     // generate 7-segment clock & display clock
     clockdiv U1(
@@ -90,16 +96,22 @@ module Pong_Top(
         .ballX(posX),
         .ballY(posY),
         .paddle1Y(paddle_one),
-        .paddle2Y(paddle_two)
+        .paddle2Y(paddle_two),
+        .score_one_ones(digit_zero),
+        .score_one_tens(digit_one),
+        .score_two_ones(digit_two),
+        .score_two_tens(digit_three)
     );
     
-    // 7-segment display controller
-    segdisplay U2(
-        .segclk(segclk),
-        .clr(clr),
+    Seven_Seg_Controller S (
+        .digit0(digit_zero),
+        .digit1(digit_one),
+        .digit2(digit_two),
+        .digit3(digit_three),
+        .clk(segclk),
         .seg(seg),
-        .an(an)
-        );
+        .anode(an)
+    );
     
     // VGA controller
     vga640x480 U3(

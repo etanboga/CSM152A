@@ -26,7 +26,11 @@ module Asset_Manager(
     output [9:0] ballX,
     output [8:0] ballY,
     output [8:0] paddle1Y,
-    output [8:0] paddle2Y
+    output [8:0] paddle2Y,
+    output [3:0] score_one_tens,
+    output [3:0] score_one_ones,
+    output [3:0] score_two_tens,
+    output [3:0] score_two_ones
     );
     
     parameter MAX_X = 790;
@@ -58,6 +62,16 @@ module Asset_Manager(
     assign paddle1down = down1;
     assign paddle2up = up2;
     assign paddle2down = down2;
+    
+    reg [3:0] score_one_tens_reg = 0;
+    reg [3:0] score_one_ones_reg = 0;
+    reg [3:0] score_two_tens_reg = 0;
+    reg [3:0] score_two_ones_reg = 0;
+    
+    assign score_one_tens = score_one_tens_reg;
+    assign score_one_ones = score_one_ones_reg;
+    assign score_two_tens = score_two_tens_reg;
+    assign score_two_ones = score_two_ones_reg;
     
     Paddle_Controller P1 (
         .clk(clk),
@@ -155,23 +169,49 @@ module Asset_Manager(
             down_ball <= down_ball;
         end
         
-        if (ball_pos_x >= MAX_X)
+        if (ball_pos_x >= MAX_X) // Hits the right of the screen; Player one score
         begin
             rst <= 1;
             right_ball <= 0;
             left_ball <= 1;
+
+            if (score_one_ones_reg < 9)
+            begin
+                score_one_tens_reg <= score_one_tens_reg;
+                score_one_ones_reg <= score_one_ones_reg + 1;
+            end
+            else
+            begin
+                score_one_tens_reg <= score_one_tens_reg + 1;
+                score_one_ones_reg <= 0;
+            end
+           
         end
-        else if (ball_pos_x <= MIN_X)
+        else if (ball_pos_x <= MIN_X) // Hits the left of the screen; Player two score
         begin
             rst <= 1;
             right_ball <= 1;
             left_ball <= 0;
+            if (score_two_ones_reg < 9)
+            begin
+                score_two_tens_reg <= score_two_tens_reg;
+                score_two_ones_reg <= score_two_ones_reg + 1;
+            end
+            else
+            begin
+                score_two_ones_reg <= 0;
+                score_two_tens_reg <= score_two_tens_reg + 1;
+            end
         end
-        else
+        else 
         begin
             rst <= 0;
             right_ball <= right_ball;
             left_ball <= left_ball;
+            score_one_ones_reg <= score_one_ones_reg;
+            score_one_tens_reg <= score_one_tens_reg;
+            score_two_ones_reg <= score_two_ones_reg;
+            score_two_tens_reg <= score_two_tens_reg;
         end
     end
 endmodule
