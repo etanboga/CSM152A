@@ -97,10 +97,10 @@ module Pong_Top(
         .ballY(posY),
         .paddle1Y(paddle_one),
         .paddle2Y(paddle_two),
-        .score_one_ones(digit_zero),
-        .score_one_tens(digit_one),
-        .score_two_ones(digit_two),
-        .score_two_tens(digit_three)
+        .score_one_ones(digit_two),
+        .score_one_tens(digit_three),
+        .score_two_ones(digit_zero),
+        .score_two_tens(digit_one)
     );
     
     Seven_Seg_Controller S (

@@ -116,6 +116,13 @@ begin
     paddle2 <= (hc >= (hbp + 632) && hc <= (hbp+640) && vc >= (paddle2Y - 32) && vc <= (paddle2Y + 32));
 	if (vc >= vbp && vc < vfp)
 	begin
+	if (hc >= (463) && hc <= (465))
+    begin
+        red <= 'b111;
+        green <= 'b111;
+        blue <= 'b11;
+    end
+             
 		if (ball)
 		begin
 		  red = 3'b000;
@@ -136,6 +143,7 @@ begin
           green = 'b000;
           blue = 'b11;
         end
+         
         if (!ball && !paddle1 && !paddle2)
         begin
             red = 0;

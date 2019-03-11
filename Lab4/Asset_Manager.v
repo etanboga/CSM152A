@@ -203,6 +203,7 @@ module Asset_Manager(
                 score_two_tens_reg <= score_two_tens_reg + 1;
             end
         end
+        
         else 
         begin
             rst <= 0;
@@ -212,6 +213,21 @@ module Asset_Manager(
             score_one_tens_reg <= score_one_tens_reg;
             score_two_ones_reg <= score_two_ones_reg;
             score_two_tens_reg <= score_two_tens_reg;
+        end
+        
+        if ((((ballY + 8) <= (paddle_1_pos + 40) && (ballY -8) >= (paddle_1_pos - 40)) && ((ballX - 8) <= 168))) // Ball collides with paddle 1
+        begin
+            left_ball <= 0;
+            right_ball <= 1;
+            up_ball <= 1;
+            down_ball <= 0;
+        end
+        else if ((((ballY + 8) <= (paddle_2_pos + 40) && (ballY -8) >= (paddle_2_pos - 40)) && ((ballX + 8) >= 776))) // Ball collides with paddle 2
+        begin
+            left_ball <= 1;
+            right_ball <= 0;
+            up_ball <= 1;
+            down_ball <= 0;
         end
     end
 endmodule
