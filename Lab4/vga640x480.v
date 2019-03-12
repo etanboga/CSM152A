@@ -23,6 +23,7 @@
 module vga640x480(
 	input wire dclk,			//pixel clock: 25MHz
 	input wire clr,			//asynchronous reset
+	//input wire hard, 
 	input wire [9:0] ballX,
 	input wire [8:0] ballY,
 	input wire [8:0] paddle1Y,
@@ -108,10 +109,10 @@ reg ball = 0;
 reg paddle1 = 0;
 reg paddle2 = 0;
 
+
 always @(*)
 begin
-	// first check if we're within vertical active video range
-	ball <= (hc >= (ballX - 8) && hc <= (ballX + 8) && vc >= (ballY-8) && vc <= (ballY + 8));
+    ball <= (hc >= (ballX - 8) && hc <= (ballX + 8) && vc >= (ballY-8) && vc <= (ballY + 8));
     paddle1 <= (hc >= (hbp+16) && hc <= (hbp + 24) && vc >= (paddle1Y - 32) && vc <= (paddle1Y + 32));
     paddle2 <= (hc >= (hbp + 632) && hc <= (hbp+640) && vc >= (paddle2Y - 32) && vc <= (paddle2Y + 32));
 	if (vc >= vbp && vc < vfp)

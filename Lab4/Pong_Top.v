@@ -24,6 +24,8 @@ module Pong_Top(
     input wire clk,            
     input wire clr,            // center button
     input wire start,          // top button
+    input wire hard,           // first switch
+    input wire two_player,     // second switch
     output wire [6:0] seg,    
     output wire [3:0] an,    
     output wire [2:0] red,    
@@ -82,19 +84,23 @@ module Pong_Top(
     wire runGame;
     assign runGame = isRunning;
     
-    always @ (posedge run)
+    wire reset;
+    reg rst = 0;
+    assign reset = rst;
+    
+    always @ (posedge clk or posedge run)
+    begin
+    if (run == 1)
     begin
         isRunning <= ~isRunning;
     end
-
-//    always @ (posedge clk or posedge start)
-//    begin
-//        if (start == 1 && run == 0)
-//        begin
-//            isRunning <= ~isRunning;
-//        end
-//    end
-    
+    else begin
+        if ((digit_two >= 0 && digit_three == 1) || (digit_zero >= 0 && digit_one == 1))
+        begin
+            isRunning <= 0;
+        end
+        end
+    end
     
     // generate 7-segment clock & display clock
     clockdiv U1(
@@ -114,12 +120,18 @@ module Pong_Top(
     
     Asset_Manager (
         .clk(gclk),
-        .reset(clr),
+        .reset(reset),
+        .hard(hard),
         .ballX(posX),
         .ballY(posY),
         .start(runGame),
         .paddle1Y(paddle_one),
         .paddle2Y(paddle_two),
+        .player1up(),
+        .player1down(),
+        .player2up(),
+        .player2down(),
+        .two_player(two_player),
         .score_one_ones(digit_two),
         .score_one_tens(digit_three),
         .score_two_ones(digit_zero),
@@ -140,6 +152,7 @@ module Pong_Top(
     vga640x480 U3(
         .dclk(dclk),
         .clr(clr),
+        //.hard(hard),
         .hsync(hsync),
         .vsync(vsync),
         .red(red),

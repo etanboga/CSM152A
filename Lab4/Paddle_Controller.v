@@ -24,25 +24,41 @@ module Paddle_Controller(
     input clk,
     input up,
     input down,
+    input rst,
+    input hard,
     output [8:0] paddleY
     );
     
-    reg [8:0] posY = 9;
+    reg [8:0] posY = 271;
     assign paddleY = posY;
     
-    always @ (posedge clk)
+    always @ (posedge clk or posedge rst)
     begin
-        if (up == 1)
+    if (rst == 0)
+    begin
+        posY <= 271;
+    end
+    else begin
+        if (up == 1 && hard == 1)
         begin
             posY <= posY - 1;
         end
-        else if (down == 1)
+        else if (down == 1 && hard == 1)
         begin
             posY <= posY + 1;
+        end
+        else if (up == 1 && hard == 0)
+        begin
+            posY <= posY - 2;
+        end
+        else if (down == 1 && hard == 0)
+        begin
+            posY <= posY + 2;
         end
         else
         begin
             posY <= posY;
+        end
         end
     end
 endmodule

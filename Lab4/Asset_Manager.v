@@ -24,6 +24,12 @@ module Asset_Manager(
     input clk,
     input reset,
     input start,
+    input hard,
+    input player1up,
+    input player1down,
+    input player2up, 
+    input player2down,
+    input two_player,
     output [9:0] ballX,
     output [8:0] ballY,
     output [8:0] paddle1Y,
@@ -54,9 +60,9 @@ module Asset_Manager(
     wire paddle2up;
     wire paddle2down;
     
-    reg up1 = 1;
+    reg up1 = 0;
     reg down1 = 0;
-    reg up2 = 1;
+    reg up2 = 0;
     reg down2 = 0;
     
     assign paddle1up = up1;
@@ -76,6 +82,8 @@ module Asset_Manager(
     
     Paddle_Controller P1 (
         .clk(clk),
+        .rst(start),
+        .hard(hard),
         .up(paddle1up),
         .down(paddle1down),
         .paddleY(paddle_1_pos)
@@ -83,6 +91,8 @@ module Asset_Manager(
     
     Paddle_Controller P2 (
         .clk(clk),
+        .rst(start),
+        .hard(hard),
         .up(paddle2up),
         .down(paddle2down),
         .paddleY(paddle_2_pos)
@@ -121,18 +131,41 @@ module Asset_Manager(
     );
     
     
-    always @ (posedge clk)
+    always @ (posedge clk or negedge start)
     begin
-        if (paddle_1_pos >= MAX_Y)
+    if (start == 0)
+    begin
+        score_one_tens_reg <= 0;
+        score_one_ones_reg <= 0;
+        score_two_tens_reg <= 0;
+        score_two_ones_reg <= 0;
+        rst <= 1;
+    end
+    
+    else begin
+    if (paddle_1_pos >= MAX_Y)
+    begin
+        up1 <= 0;
+        down1 <= 1;
+        end
+        else if (paddle_1_pos <= MIN_Y)
         begin
             up1 <= 1;
             down1 <= 0;
         end
-        else if (paddle_1_pos <= MIN_Y)
+        
+        else if (player1up == 1)
+        begin
+            up1 <= 1;
+            down1 <= 0;
+        end
+        
+        else if (player1down == 1)
         begin
             up1 <= 0;
             down1 <= 1;
         end
+        
         else 
         begin
             up1 <= up1;
@@ -149,6 +182,42 @@ module Asset_Manager(
             up2 <= 0;
             down2 <= 1;
         end
+        else if ( two_player == 1 && player2up == 1)
+        begin
+            up2 <= 1;
+            down2 <= 0;
+        end
+        
+        else if ( two_player == 1 && player2down == 1)
+        begin
+            up2 <= 0;
+            down2 <= 1;
+        end
+        
+        else if ( two_player == 1 && player2up == 0 && player2down == 0)
+        begin
+            up2 <= 0;
+            down2 <= 0;
+        end
+        
+        else if ( two_player == 0 && ballY < paddle2Y ) 
+        begin
+            up2 <= 1;
+            down2 <= 0;
+        end
+        
+        else if ( two_player == 0 && ballY > paddle2Y )
+        begin
+            up2 <= 0;
+            down2 <= 1;
+        end
+        
+        else if ( two_player == 0 && ballY == paddle2Y )
+        begin
+            up2 <= up2;
+            down2 <= down2;
+        end
+        
         else
         begin
             up2 <= up2;
@@ -231,5 +300,6 @@ module Asset_Manager(
             up_ball <= 1;
             down_ball <= 0;
         end
+    end
     end
 endmodule
