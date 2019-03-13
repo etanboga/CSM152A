@@ -26,16 +26,55 @@ module Pong_Top(
     input wire start,          // top button
     input wire hard,           // first switch
     input wire two_player,     // second switch
+    input wire SS1,
+    input wire MOSI1,
+    input wire MISO1,
+    input wire SCLK1,
+    input wire SS2,
+    input wire MOSI2,
+    input wire MISO2,
+    input wire SCLK2,
     output wire [6:0] seg,    
     output wire [3:0] an,    
     output wire [2:0] red,    
     output wire [2:0] green,
     output wire [1:0] blue,    
     output wire hsync,        
-    output wire vsync            
+    output wire vsync,
+    output upLed, //l1 and u16
+    output downLed            
     );
     
+    wire upFeeder1;
+    wire upFeeder2;
     
+    wire downFeeder1;
+    wire downFeeder2;
+    assign upLed = upFeeder1;
+    assign downLed = downFeeder1;
+    
+    joystick js1(
+        .clk(clk),
+        .rst(clr),
+        .miso(MISO1),
+        .ss(SS1),
+        .mosi(MOSI1),
+        .sclk(SCLK1),
+        .upRead(upFeeder1),
+        .downRead(downFeeder1)
+        );
+        
+    joystick js2(
+            .clk(clk),
+            .rst(clr),
+            .miso(MISO2),
+            .ss(SS2),
+            .mosi(MOSI2),
+            .sclk(SCLK2),
+            .upRead(upFeeder2),
+            .downRead(downFeeder2)
+            );
+
     // 7-segment clock interconnect
     wire segclk;
     
@@ -127,10 +166,10 @@ module Pong_Top(
         .start(runGame),
         .paddle1Y(paddle_one),
         .paddle2Y(paddle_two),
-        .player1up(),
-        .player1down(),
-        .player2up(),
-        .player2down(),
+        .player1up(upFeeder1),
+        .player1down(downFeeder1),
+        .player2up(upFeeder2),
+        .player2down(downFeeder2),
         .two_player(two_player),
         .score_one_ones(digit_two),
         .score_one_tens(digit_three),

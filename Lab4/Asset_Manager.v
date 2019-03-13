@@ -166,6 +166,12 @@ module Asset_Manager(
             down1 <= 1;
         end
         
+        else if (player1up == 0 && player1down == 0)
+        begin
+            up1 <= 0;
+            down1 <= 0;
+        end
+        
         else 
         begin
             up1 <= up1;
